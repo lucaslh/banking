@@ -44,7 +44,12 @@ data = []
 for idx, line in enumerate(lines[:-1]):
     if len(line) > 2 and (line[1] == '/' or line[2] == '/'):
         entry       = [thing for thing in line.strip().replace('"','').split('  ') if len(thing) > 0]
-        description = ' '.join( lines[idx+1].split() )
+        # Often there is more detail to the description on the next line, but
+        # sometimes it is another entry. Here I am assuming that more detail would start with a bunch of blank space
+        if len(lines[idx+1]) > 0 and lines[idx+1].startswith('    '):
+            description = ' '.join( lines[idx+1].split() )
+        else:
+            description = ''
         entry[1]    += ', ' + description
         #Note that there are commas in entry[1], so quotes will be inserted around it in the write-out
         data.append( entry )
@@ -53,9 +58,20 @@ data = np.array( data )
 
 
 import datetime
-print 'WARNING: Hacking year to 2015'
+# Try to find the year in the input filename
+for i in range(len(args.input_file)-4):
+    try:
+        year = int(args.input_file[i:i+4])
+        if year > 0:
+            break
+    except:
+        continue
+    
+    
+print 'Year extracted from filename as {0}'.format( year )
+year = str(year)
 for i in range( data.shape[0] ):
-    data[i,0] = data[i,0] + '/15'
+    data[i,0] = data[i,0] + '/' + year[2:]
 dates   = np.array( [datetime.datetime.strptime( el[0], "%m/%d/%y" ).date().toordinal() for el in data] )
 
 # Remove commas from amounts and sort the data by date and amount

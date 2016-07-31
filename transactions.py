@@ -1,11 +1,4 @@
 #!/usr/bin/env python
-'''
-Goals:
-1. Shows percentage of income going to different categories
-2. Displays list of unrecognized transactions
-3. Shows monthly or weekly averages for each store category
-
-'''
 
 import argparse
 parser = argparse.ArgumentParser(__doc__)
@@ -45,7 +38,7 @@ stores = {'kohls' : ['kohls'],
           #'big bean' : ['big bean cafe'],
           #'electric' : ['PSNH', 'eversource'],
           #'gym'      : ['seacoast sports clubs'],
-          'clothes' : ['comenity'], #I think comenity is for the Loft card
+          'clothes' : ['comenity'], #Loft card
           'health' : ['tranquility salon'],
           'car' : ['subaru', ' ford', 'car wash', 'e z pass'],
           'subaru' : ['subaru'],

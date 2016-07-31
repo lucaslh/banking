@@ -114,20 +114,22 @@ class Transaction_Gui( QtGui.QMainWindow ):
         #pandas_data["Day of the Week"] = pandas_data["Date"].dt.dayofweek
         #grouped_data = pandas_data.groupby('Day of the Week').aggregate(np.mean)
 
-        roll_mean =[]
+        roll_sum =[]
         date = pandas_data.index[0]
         rolling_dates = []
         while date <= pandas_data.index[-1]:
             amt = pandas_data['Amount'][date : date + pd.Timedelta('14 days')]
-            roll_mean.append( amt.mean() )
+            roll_sum.append( amt.sum() )
             rolling_dates.append( date )
-            date = date + pd.Timedelta('14 days')
+            date = date + pd.Timedelta('7 days')
 
-        print np.mean(roll_mean)
+
+        print np.mean(roll_sum)/2
+        print np.median(roll_sum)/2
         
         self.ax.cla()
         self.ax.plot( dates, amounts )
-        self.ax.plot( rolling_dates, roll_mean, 'r' )
+        self.ax.plot( rolling_dates, roll_sum, 'r' )
         self.canvas.draw()
         import matplotlib.dates as mdates
         myFmt = mdates.DateFormatter('%Y-%m-%d')
